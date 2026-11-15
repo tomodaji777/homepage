@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f4">
+  <meta name="description" content="Tomo／大吉的個人履歷與作品集網站。">
+  <title>Tomo／大吉 — 個人履歷與作品集</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4; --surface: #fff; --surface-2: #efefe9;
+      --text: #20211f; --muted: #777970; --line: #e4e4dc;
+      --accent: #526b5b; --accent-strong: #3e5547;
+      --shadow: 0 24px 70px rgba(25, 31, 26, .10);
+      --radius: 22px; --max: 1120px;
+    }
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #171a18; --surface: #202522; --surface-2: #292f2b;
+      --text: #edf0eb; --muted: #a5ada5; --line: #343c36;
+      --accent: #a7c4ad; --accent-strong: #c1d8c5;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .30);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      line-height: 1.7; letter-spacing: .01em;
+      transition: background .25s ease, color .25s ease;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .container { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
+    .site-header {
+      position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { font-size: 1.12rem; font-weight: 750; letter-spacing: -.04em; white-space: nowrap; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 32px); color: var(--muted); font-size: .9rem; }
+    .nav-links a { transition: color .2s ease; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .icon-button {
+      width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%;
+      display: inline-grid; place-items: center; color: var(--text); background: var(--surface);
+      cursor: pointer; transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .icon-button:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .menu-button { display: none; }
+    .hero { padding: clamp(92px, 13vw, 160px) 0 112px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--accent); font-size: .78rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+    h1 { max-width: 900px; margin: 24px 0 22px; font-size: clamp(3.25rem, 9vw, 7.6rem); line-height: .99; letter-spacing: -.075em; font-weight: 760; }
+    h1 .soft { color: var(--accent); }
+    .hero-bottom { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-top: 42px; }
+    .intro { max-width: 520px; color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.12rem); }
+    .intro strong { color: var(--text); font-weight: 600; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      min-height: 52px; padding: 0 23px; border-radius: 999px;
+      background: var(--accent); color: #fff; border: 1px solid var(--accent);
+      font-size: .92rem; font-weight: 650; cursor: pointer;
+      transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+    [data-theme="dark"] .button { color: #172019; }
+    .button:hover { transform: translateY(-3px); background: var(--accent-strong); box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 25%, transparent); }
+    .button.secondary { color: var(--text); background: transparent; border-color: var(--line); }
+    .button.secondary:hover { border-color: var(--accent); box-shadow: none; }
+    section { padding: 100px 0; border-top: 1px solid var(--line); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 48px; }
+    .section-kicker { color: var(--accent); font-size: .76rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    h2 { margin: 10px 0 0; font-size: clamp(2.1rem, 5vw, 3.5rem); line-height: 1.1; letter-spacing: -.055em; }
+    .section-note { max-width: 360px; color: var(--muted); font-size: .94rem; }
+    .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 70px; align-items: start; }
+    .about-copy { max-width: 650px; font-size: clamp(1.12rem, 2vw, 1.45rem); line-height: 1.8; letter-spacing: -.02em; }
+    .about-copy p { margin: 0 0 20px; }
+    .about-copy .muted { color: var(--muted); }
+    .about-aside { padding: 28px; border-radius: var(--radius); background: var(--surface-2); }
+    .aside-label { color: var(--muted); font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; }
+    .aside-value { margin-top: 8px; font-size: 1.08rem; font-weight: 650; }
+    .aside-divider { height: 1px; background: var(--line); margin: 22px 0; }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .skill {
+      min-height: 145px; padding: 24px; border: 1px solid var(--line); border-radius: 18px;
+      background: var(--surface); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .skill:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--shadow); }
+    .skill-number { color: var(--accent); font-size: .76rem; font-weight: 750; letter-spacing: .1em; }
+    .skill h3 { margin: 22px 0 4px; font-size: 1.12rem; letter-spacing: -.02em; }
+    .skill p { margin: 0; color: var(--muted); font-size: .88rem; }
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .project-card {
+      overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--surface); transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+    .project-card:hover { transform: translateY(-7px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+    .project-visual {
+      position: relative; min-height: 220px; overflow: hidden; display: grid; place-items: center;
+      background: linear-gradient(135deg, #dce5db, #b7c8bb 55%, #e9e8df);
+    }
+    .project-visual::before, .project-visual::after { content: ""; position: absolute; border: 1px solid rgba(54, 77, 61, .25); border-radius: 50%; }
+    .project-visual::before { width: 230px; height: 230px; }
+    .project-visual::after { width: 160px; height: 160px; }
+    .project-visual.alt { background: linear-gradient(135deg, #e7ddd2, #c9b9a9 58%, #eee8df); }
+    .project-visual.alt::before, .project-visual.alt::after { border-color: rgba(105, 77, 56, .24); }
+    .project-visual.third { background: linear-gradient(135deg, #d9dfe8, #b6c4d3 58%, #e9e9e6); }
+    .project-visual.third::before, .project-visual.third::after { border-color: rgba(58, 77, 102, .25); }
+    .visual-mark { z-index: 1; width: 76px; height: 76px; border-radius: 24px; display: grid; place-items: center; background: rgba(255,255,255,.45); color: #35483b; font-size: 1.5rem; font-weight: 750; backdrop-filter: blur(8px); box-shadow: 0 12px 35px rgba(40,55,43,.1); }
+    .project-content { padding: 24px; }
+    .project-type { color: var(--accent); font-size: .72rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+    .project-content h3 { margin: 8px 0; font-size: 1.25rem; letter-spacing: -.035em; }
+    .project-content p { min-height: 52px; margin: 0; color: var(--muted); font-size: .9rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 20px 0 22px; }
+    .tag { padding: 5px 10px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font-size: .72rem; }
+    .text-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-size: .88rem; font-weight: 700; background: none; border: 0; padding: 0; cursor: pointer; }
+    .text-link:hover { gap: 13px; }
+    .contact-panel { display: flex; justify-content: space-between; align-items: center; gap: 40px; padding: clamp(28px, 5vw, 58px); border-radius: 28px; background: var(--surface-2); }
+    .contact-panel h2 { max-width: 520px; }
+    .contact-panel p { color: var(--muted); margin: 16px 0 0; }
+    .contact-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .email-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; font-weight: 650; }
+    .copy-button { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 999px; padding: 9px 14px; cursor: pointer; font-size: .8rem; transition: border-color .2s ease, transform .2s ease; }
+    .copy-button:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .socials { display: flex; gap: 10px; }
+    .social-link { width: 42px; height: 42px; border: 1px solid var(--line); background: var(--surface); border-radius: 50%; display: grid; place-items: center; color: var(--muted); font-size: .78rem; font-weight: 750; transition: .2s ease; }
+    .social-link:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
+    footer { padding: 28px 0; color: var(--muted); font-size: .8rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
+    .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: none; place-items: center; padding: 20px; background: rgba(10, 14, 11, .58); backdrop-filter: blur(8px); }
+    .modal-backdrop.open { display: grid; animation: fadeIn .2s ease; }
+    .modal { position: relative; width: min(620px, 100%); max-height: min(82vh, 760px); overflow: auto; padding: clamp(26px, 5vw, 42px); border-radius: 24px; background: var(--surface); box-shadow: var(--shadow); animation: rise .25s ease; }
+    .modal-close { position: absolute; top: 18px; right: 18px; }
+    .modal h2 { padding-right: 38px; font-size: clamp(1.8rem, 5vw, 2.6rem); }
+    .modal p { color: var(--muted); }
+    .modal .tags { margin-bottom: 0; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 60%, transparent); outline-offset: 4px; }
+    @media (max-width: 820px) {
+      .nav-links { gap: 14px; font-size: .82rem; }
+      .about-grid { gap: 30px; }
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+      .projects-grid .project-card:last-child { grid-column: span 2; }
+      .projects-grid .project-card:last-child .project-visual { min-height: 190px; }
+    }
+    @media (max-width: 640px) {
+      .container { width: min(100% - 36px, var(--max)); }
+      .nav { min-height: 68px; }
+      .menu-button { display: inline-grid; }
+      .nav-links {
+        position: absolute; top: 68px; left: 0; right: 0; display: none; flex-direction: column;
+        align-items: stretch; gap: 0; padding: 10px 18px 18px; background: var(--bg);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 4px; }
+      .hero { padding: 86px 0 82px; }
+      .hero-bottom { align-items: flex-start; flex-direction: column; gap: 24px; }
+      section { padding: 76px 0; }
+      .section-head { display: block; margin-bottom: 32px; }
+      .section-note { margin-top: 16px; }
+      .about-grid { grid-template-columns: 1fr; gap: 28px; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .skill { min-height: 132px; padding: 18px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .projects-grid .project-card:last-child { grid-column: auto; }
+      .contact-panel { align-items: flex-start; flex-direction: column; gap: 28px; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (max-width: 390px) { .skills-grid { grid-template-columns: 1fr; } .email-row { font-size: .9rem; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="主要導覽">
+      <a class="brand" href="#top">Tomo<span>／</span>大吉.</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#about">關於我</a>
+        <a href="#skills">專業技能</a>
+        <a href="#work">精選作品</a>
+        <a href="#contact">聯絡方式</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-button" id="themeToggle" type="button" aria-label="切換深色或淺色模式" title="切換主題">
+          <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        </button>
+        <button class="icon-button menu-button" id="menuToggle" type="button" aria-label="開啟導覽選單" aria-expanded="false">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="container hero">
+      <div class="eyebrow">個人履歷・作品集</div>
+      <h1>你好，我是<br><span class="soft">Tomo／大吉。</span></h1>
+      <div class="hero-bottom">
+        <p class="intro">一位熱愛探索與創造的 <strong>創意工作者</strong>。我相信好的作品，來自清晰的思考、細節的打磨，以及對每個想法的好奇心。</p>
+        <a class="button" href="#work">查看精選作品 <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <section id="about">
+      <div class="container reveal">
+        <div class="section-head">
+          <div><div class="section-kicker">01 / About</div><h2>關於我</h2></div>
+          <p class="section-note">保持好奇、持續學習，並把想法轉化成有意義的成果。</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-copy">
+            <p>嗨，很高興認識你！我是 Tomo，也可以叫我大吉。</p>
+            <p class="muted">我喜歡將創意、邏輯與美感結合，從理解問題開始，逐步整理方向、嘗試解法，最後完成兼具質感與實用性的作品。</p>
+            <p class="muted">這裡整理了我的技能與近期作品。歡迎瀏覽，也期待有機會一起合作。</p>
+          </div>
+          <aside class="about-aside">
+            <div class="aside-label">目前關注</div><div class="aside-value">設計思考・數位創作・持續成長</div>
+            <div class="aside-divider"></div>
+            <div class="aside-label">合作邀請</div><div class="aside-value">歡迎交流想法與專案機會</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container reveal">
+        <div class="section-head">
+          <div><div class="section-kicker">02 / Expertise</div><h2>專業技能</h2></div>
+          <p class="section-note">以下先放入示範項目，請依照你的實際專長與熟悉程度調整。</p>
+        </div>
+        <div class="skills-grid">
+          <article class="skill"><div class="skill-number">01 — THINK</div><h3>創意企劃</h3><p>需求整理、概念發想、內容規劃</p></article>
+          <article class="skill"><div class="skill-number">02 — DESIGN</div><h3>視覺設計</h3><p>版面編排、品牌視覺、使用者體驗</p></article>
+          <article class="skill"><div class="skill-number">03 — BUILD</div><h3>網頁製作</h3><p>HTML、CSS、JavaScript 基礎</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="container reveal">
+        <div class="section-head">
+          <div><div class="section-kicker">03 / Selected Work</div><h2>精選作品</h2></div>
+          <p class="section-note">三個作品展示版位。點選卡片可查看專案介紹與細節。</p>
+        </div>
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="project-visual"><div class="visual-mark">01</div></div>
+            <div class="project-content">
+              <div class="project-type">Branding / 2025</div><h3>品牌識別設計</h3>
+              <p>以簡潔的視覺語言，建立一致且容易辨識的品牌形象。</p>
+              <div class="tags"><span class="tag">品牌策略</span><span class="tag">Illustrator</span><span class="tag">視覺設計</span></div>
+              <button class="text-link" data-project="0">查看專案詳情 <span>→</span></button>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-visual alt"><div class="visual-mark">02</div></div>
+            <div class="project-content">
+              <div class="project-type">Digital / 2025</div><h3>數位內容企劃</h3>
+              <p>整合內容架構與視覺呈現，打造清楚易讀的數位體驗。</p>
+              <div class="tags"><span class="tag">內容企劃</span><span class="tag">Figma</span><span class="tag">社群</span></div>
+              <button class="text-link" data-project="1">查看專案詳情 <span>→</span></button>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-visual third"><div class="visual-mark">03</div></div>
+            <div class="project-content">
+              <div class="project-type">Web / 2025</div><h3>個人網站設計</h3>
+              <p>以響應式版面呈現個人特色，兼顧閱讀節奏與操作體驗。</p>
+              <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+              <button class="text-link" data-project="2">查看專案詳情 <span>→</span></button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container reveal">
+        <div class="contact-panel">
+          <div><div class="section-kicker">04 / Get in touch</div><h2>有想法，<br>就一起聊聊。</h2><p>如果你有合作提案、工作機會，或只是想打聲招呼，歡迎寄信給我。</p></div>
+          <div class="contact-actions">
+            <div class="email-row"><a href="mailto:tomo_daji@icloud.com" id="emailAddress">tomo_daji@icloud.com</a><button class="copy-button" id="copyEmail" type="button">複製信箱</button></div>
+            <div class="socials" aria-label="社群連結">
+              <!-- 請將下方 # 替換成你的真實社群網址；尚未提供網址，因此先不放入虛構連結。 -->
+              <a class="social-link" href="#" aria-label="Instagram（請設定連結）" title="請填入 Instagram 網址">IG</a>
+              <a class="social-link" href="#" aria-label="LinkedIn（請設定連結）" title="請填入 LinkedIn 網址">in</a>
+              <a class="social-link" href="#" aria-label="GitHub（請設定連結）" title="請填入 GitHub 網址">GH</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="container footer-inner"><span>© <span id="year"></span> Tomo／大吉. All rights reserved.</span><a href="#top">回到頁首 ↑</a></div></footer>
+
+  <div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="icon-button modal-close" id="modalClose" type="button" aria-label="關閉彈窗">✕</button>
+      <div class="section-kicker" id="modalType">PROJECT DETAILS</div>
+      <h2 id="modalTitle">作品標題</h2>
+      <p id="modalDescription"></p>
+      <div class="aside-divider"></div>
+      <div class="aside-label">專案內容</div><p id="modalDetails"></p>
+      <div class="aside-label">使用工具</div><div class="tags" id="modalTags"></div>
+    </div>
+  </div>
+
+  <script>
+    // 編輯作品資料：標題、簡介、詳細介紹與工具標籤都集中在這裡。
+    const projects = [
+      {
+        type: "Branding / 2025",
+        title: "品牌識別設計",
+        description: "以簡潔的視覺語言，建立一致且容易辨識的品牌形象。",
+        details: "專案目標是梳理品牌核心個性，並將概念轉化為標誌、色彩與延伸視覺規範。此處可補上你的設計背景、負責範圍、執行流程，以及最終成果或成效。",
+        tags: ["品牌策略", "Illustrator", "視覺設計"]
+      },
+      {
+        type: "Digital / 2025",
+        title: "數位內容企劃",
+        description: "整合內容架構與視覺呈現，打造清楚易讀的數位體驗。",
+        details: "此專案聚焦於受眾需求與資訊層級，透過內容規劃和版面測試，讓重要訊息更容易被理解。可在此補充你的角色、合作方式與專案成果。",
+        tags: ["內容企劃", "Figma", "社群"]
+      },
+      {
+        type: "Web / 2025",
+        title: "個人網站設計",
+        description: "以響應式版面呈現個人特色，兼顧閱讀節奏與操作體驗。",
+        details: "從網站架構、視覺風格到前端互動，規劃一個容易瀏覽的個人展示空間。可補充使用情境、技術挑戰、設計決策與網站上線連結。",
+        tags: ["HTML", "CSS", "JavaScript"]
+      }
+    ];
+
+    const root = document.documentElement;
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+    const savedTheme = localStorage.getItem("tomo-theme");
+    if (savedTheme) root.dataset.theme = savedTheme;
+    function updateThemeIcon() {
+      const dark = root.dataset.theme === "dark";
+      themeIcon.innerHTML = dark
+        ? '<path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/>'
+        : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>';
+    }
+    updateThemeIcon();
+    themeToggle.addEventListener("click", () => {
+      root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("tomo-theme", root.dataset.theme);
+      updateThemeIcon();
+    });
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    menuToggle.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(open));
+    });
+    navLinks.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }));
+
+    const modal = document.getElementById("projectModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalType = document.getElementById("modalType");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalDetails = document.getElementById("modalDetails");
+    const modalTags = document.getElementById("modalTags");
+    let lastFocused = null;
+    document.querySelectorAll("[data-project]").forEach(button => {
+      button.addEventListener("click", () => {
+        const project = projects[Number(button.dataset.project)];
+        if (!project) return;
+        lastFocused = button;
+        modalType.textContent = project.type;
+        modalTitle.textContent = project.title;
+        modalDescription.textContent = project.description;
+        modalDetails.textContent = project.details;
+        modalTags.replaceChildren(...project.tags.map(tag => {
+          const span = document.createElement("span");
+          span.className = "tag";
+          span.textContent = tag;
+          return span;
+        }));
+        modal.classList.add("open");
+        document.body.style.overflow = "hidden";
+        document.getElementById("modalClose").focus();
+      });
+    });
+    function closeModal() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+      if (lastFocused) lastFocused.focus();
+    }
+    document.getElementById("modalClose").addEventListener("click", closeModal);
+    modal.addEventListener("click", event => { if (event.target === modal) closeModal(); });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
+
+    document.getElementById("copyEmail").addEventListener("click", async event => {
+      const email = "tomo_daji@icloud.com";
+      const button = event.currentTarget;
+      try {
+        await navigator.clipboard.writeText(email);
+        button.textContent = "已複製 ✓";
+      } catch {
+        const field = document.createElement("textarea");
+        field.value = email; field.style.position = "fixed"; field.style.opacity = "0";
+        document.body.appendChild(field); field.select();
+        const copied = document.execCommand("copy"); field.remove();
+        button.textContent = copied ? "已複製 ✓" : "請手動複製";
+      }
+      window.setTimeout(() => button.textContent = "複製信箱", 2200);
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
